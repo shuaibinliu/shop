@@ -125,3 +125,12 @@ class Cardpackage(Base):
     CAstart = Column(String(14))  # 卡包中优惠券的开始时间
     CAend = Column(String(14))  # 卡包中的优惠券结束时间
     COid = Column(String(64), nullable=False)
+
+
+class Address(Base):
+    ADid = Column(String(), primary_key=True)
+    ADprovince = Column(String(27))  # 省
+    ADcity = Column(String(64))      # 市
+    ADcounty = Column(String(64))    # 县
+    Usid = Column(String(64))
+    ADabo = Column(Text)             # 详细地址
