@@ -7,6 +7,7 @@ import json
 import uuid
 from config.status import response_ok as ok
 from common.get_model_return_list import get_model_return_list
+from common.import_status import import_status
 
 
 class CAddress():
@@ -56,3 +57,37 @@ class CAddress():
         except Exception as e:
             print(e.message)
             return self.system_error
+
+    def add_or_update_address(self):
+        args = request.args.to_dict()
+        data = json.loads(request.data)
+
+        if "token" not in args:
+            return self.param_miss
+        uid = args.get("token")
+        ADid = data.get("ADid")
+        address_info = data.get("address")
+
+        try:
+            user_info = {}
+            if "USname" in address_info:
+                user_info["USname"] = address_info.pop("USname")
+            if "UStelphone" in address_info:
+                user_info["UStelphone"] = address_info.pop("UStelphone")
+            if ADid:
+                address_list = get_model_return_list(self.address.get_Address_by_Uid(uid))
+                if ADid not in [address.get("ADid") for address in address_list]:
+                    return import_status("error_messages_address_id_not_find", "response_error", "error_no_adid")
+
+                self.address.update_Address(address_info)
+            else:
+                self.address.add_model("Address", **address_info)
+
+            self.users.update_users_by_uid(uid, user_info)
+
+        except Exception as e:
+            print(e.message)
+            return self.system_error
+
+        from config.messages import messages_add_cart as msg
+        return {"status": ok, "message":  msg}

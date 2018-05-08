@@ -88,6 +88,7 @@ class Ordermain(Base):
     LOid = Column(String(64))                           # 站点id
     OMimage = Column(String(64))                        # 订单二维码
     OMabo = Column(Text)  # 订单备注
+    ADid = Column(String(64))
 
 
 class Orderpart(Base):

@@ -22,8 +22,8 @@ class AAddress(Resource):
 
         control_address = CAddress()
         apis = {
-            "delete_product": "control_address.del_cart()",
-            "update": "control_address.add_or_update_cart()"
+            "delete_address": "control_address.del_address()",
+            "update": "control_address.add_or_update_address()"
         }
 
         if address in apis:
